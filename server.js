@@ -12,7 +12,7 @@ const app = express();
 // add EXPRESS middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use('./api', apiRoutes);
+app.use('/api', apiRoutes);
 
 
 
