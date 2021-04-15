@@ -95,4 +95,26 @@ router.put('/voter/:id', (req, res) => {
 });
 
 
+// DELETE route
+router.delete('/voter/:id', (req, res) => {
+    const sql = `DELETE FROM voters WHERE id = ?`;
+
+    db.query(sql, req.params.id, (err, result) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+        } else if (!result.affectedRows) {
+            res.json({
+                message: 'Voter not found'
+            });
+        } else {
+            res.json({
+                message: 'deleted',
+                changes: result.affectedRows,
+                id: req.params.id
+            });
+        }
+    });
+});
+
+
 module.exports = router;
