@@ -65,4 +65,34 @@ router.post('/voter', ({ body }, res) => {
 });
 
 
+// PUT route
+router.put('/voter/:id', (req, res) => {
+    // Data validation
+    const errors = inputCheck(req.body, 'email');
+    if (errors) {
+        res.status(400).json({ error: errors });
+        return;
+    }
+
+    const sql = `UPDATE voters SET email = ? WHERE id = ?`;
+    const params = [req.body.email, req.params.id];
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+        } else if (!result.affectedRows) {
+            res.json({
+                message: 'Voter not found'
+            });
+        } else {
+            res.json({
+                message: 'success',
+                data: req.body,
+                changes: result.affectedRows
+            });
+        }
+    });
+});
+
+
 module.exports = router;
